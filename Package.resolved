@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "swift-any-error",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/valentinradu/swift-any-error.git",
+      "state" : {
+        "revision" : "3345ba8fafa0f84e70810245ccfd1e9c9d996992",
+        "version" : "0.0.1"
+      }
+    }
+  ],
+  "version" : 2
+}
