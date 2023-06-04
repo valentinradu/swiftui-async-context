@@ -36,7 +36,7 @@ private actor Counter {
     }
 }
 
-final class AsyncContextTests: XCTestCase {
+final class AsyncBoundaryTests: XCTestCase {
     func testDroppingTask() async throws {
         let counter = Counter()
         let asyncBoundaryStorage = AsyncBoundaryStorage()

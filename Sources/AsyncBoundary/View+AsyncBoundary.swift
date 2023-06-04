@@ -7,6 +7,7 @@
 
 import os
 import SwiftUI
+import ErrorBoundary
 
 class AsyncBoundaryStorage: ObservableObject {
     static let empty: AsyncBoundaryStorage = .init()
