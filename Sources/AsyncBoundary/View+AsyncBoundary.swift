@@ -57,6 +57,12 @@ private struct AsyncContextEnvironmentKey: EnvironmentKey {
     static var defaultValue: AsyncContext = .empty
 }
 
+extension UUID: TaskIdentifier {
+    public var strategy: TaskQueueStrategy {
+        .parallelize
+    }
+}
+
 public extension EnvironmentValues {
     var asyncContext: AsyncContext {
         get { self[AsyncContextEnvironmentKey.self] }
@@ -86,6 +92,10 @@ public struct AsyncContext {
          errorContext: ErrorContext) {
         _errorContext = errorContext
         _storage = storage
+    }
+    
+    public func perform(action: @MainActor @escaping () async throws -> Void) {
+        perform(UUID(), action: action)
     }
 
     public func perform<N>(_ id: N,
