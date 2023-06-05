@@ -134,7 +134,7 @@ public struct AsyncContext {
     }
 }
 
-public struct TaskBoundary<C>: View where C: View {
+public struct AsyncBoundary<C>: View where C: View {
     private let _content: C
     @StateObject private var _storage: AsyncBoundaryStorage = .empty
     @Environment(\.errorContext) private var _errorContext
