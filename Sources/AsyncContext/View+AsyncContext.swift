@@ -5,7 +5,7 @@
 //  Created by Valentin Radu on 10/03/2023.
 //
 
-import ErrorBoundary
+import ErrorContext
 import os
 import SwiftUI
 
@@ -15,7 +15,7 @@ public enum AsyncContextStrategy: Sendable, Hashable {
     case debounce(for: TimeInterval)
 }
 
-public final class AsyncContextStorage {
+final class AsyncContextStorage {
     private var _tasks: [UUID: Task<Void, Never>] = [:]
 
     var isEmpty: Bool {
@@ -108,23 +108,51 @@ public struct AsyncContext {
     }
 }
 
-public struct AsyncContextReader<C>: View where C: View {
-    public typealias ContentProvider = (AsyncContext) -> C
-    @Environment(\.errorContext) private var _errorContext
-    @State private var _state: AsyncContextStorage = .init()
-    private let _strategy: AsyncContextStrategy
-    private let _action: ContentProvider
+private struct AsyncContextStorageEnvironmentKey: EnvironmentKey {
+    static var defaultValue: AsyncContextStorage = .init()
+}
 
-    public init(strategy: AsyncContextStrategy = .drop, 
-                @ViewBuilder action: @escaping ContentProvider) {
-        _strategy = strategy
-        _action = action
+private extension EnvironmentValues {
+    var asyncContextStorage: AsyncContextStorage {
+        get { self[AsyncContextStorageEnvironmentKey.self] }
+        set { self[AsyncContextStorageEnvironmentKey.self] = newValue }
+    }
+}
+
+public struct AsyncContextProvider<C>: View where C: View {
+    public typealias ContentProvider = () -> C
+    private let _content: C
+    @State private var _storage: AsyncContextStorage = .init()
+
+    public init(@ViewBuilder contentProvider: @escaping ContentProvider) {
+        _content = contentProvider()
     }
 
     public var body: some View {
-        let context = AsyncContext(storage: _state,
-                                   strategy: _strategy,
-                                   errorContext: _errorContext)
-        _action(context)
+        _content
+            .environment(\.asyncContextStorage, _storage)
+    }
+}
+
+public struct AsyncContextReader<C>: View where C: View {
+    public typealias ContentProvider = (AsyncContext) -> C
+    @Environment(\.asyncContextStorage) private var _asyncContextStorage
+
+    private let _strategy: AsyncContextStrategy
+    private let _contentProvider: ContentProvider
+
+    public init(strategy: AsyncContextStrategy = .drop,
+                @ViewBuilder contentProvider: @escaping ContentProvider) {
+        _strategy = strategy
+        _contentProvider = contentProvider
+    }
+
+    public var body: some View {
+        ErrorContextReader { errorContext in
+            let asyncContext = AsyncContext(storage: _asyncContextStorage,
+                                            strategy: _strategy,
+                                            errorContext: errorContext)
+            _contentProvider(asyncContext)
+        }
     }
 }

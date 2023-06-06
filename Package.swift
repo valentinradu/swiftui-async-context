@@ -14,7 +14,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/valentinradu/swiftui-error-boundary.git", from: .init(0, 0, 5))
+        .package(url: "https://github.com/valentinradu/swiftui-error-context.git", from: .init(0, 0, 6))
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -22,7 +22,7 @@ let package = Package(
         .target(
             name: "AsyncContext",
             dependencies: [
-                .product(name: "ErrorBoundary", package: "swiftui-error-boundary")
+                .product(name: "ErrorContext", package: "swiftui-error-context")
             ]
         ),
         .testTarget(

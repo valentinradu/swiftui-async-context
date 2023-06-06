@@ -10,12 +10,12 @@
       }
     },
     {
-      "identity" : "swiftui-error-boundary",
+      "identity" : "swiftui-error-context",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/valentinradu/swiftui-error-boundary.git",
+      "location" : "https://github.com/valentinradu/swiftui-error-context.git",
       "state" : {
-        "revision" : "554b450d2d19abe07af56a55369ae137b35e3f69",
-        "version" : "0.0.5"
+        "revision" : "b270423ef4f2acf3de3640e26699d5801667e5b1",
+        "version" : "0.0.6"
       }
     }
   ],
