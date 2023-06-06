@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/valentinradu/swiftui-error-boundary.git",
       "state" : {
-        "revision" : "6bc8be6f6057e68b080ccff7be673c97ef336c4f",
-        "version" : "0.0.2"
+        "revision" : "554b450d2d19abe07af56a55369ae137b35e3f69",
+        "version" : "0.0.5"
       }
     }
   ],
