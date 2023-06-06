@@ -23,8 +23,7 @@ let package = Package(
             name: "AsyncContext",
             dependencies: [
                 .product(name: "ErrorBoundary", package: "swiftui-error-boundary")
-            ],
-            swiftSettings: [.unsafeFlags(["-Xfrontend", "-warn-concurrency"])]
+            ]
         ),
         .testTarget(
             name: "AsyncContextTests",
