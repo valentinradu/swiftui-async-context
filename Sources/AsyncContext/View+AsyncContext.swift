@@ -68,7 +68,8 @@ public struct AsyncContext {
         _storage = storage
     }
 
-    public func perform(action: @MainActor @Sendable @escaping () async throws -> Void) {
+    
+    public func callAsFunction(_ action: @MainActor @Sendable @escaping () async throws -> Void) {
         switch _strategy {
         case .drop:
             if !_storage.isEmpty {

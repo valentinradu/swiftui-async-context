@@ -22,12 +22,12 @@ final class AsyncContextTests: XCTestCase {
     func testDroppingTask() async throws {
         let counter = Counter()
         let asyncContextStorage = AsyncContextStorage()
-        let asyncContext = AsyncContext(storage: asyncContextStorage,
+        let performAsync = AsyncContext(storage: asyncContextStorage,
                                         strategy: .drop,
                                         errorContext: .empty)
 
         for _ in 0 ..< 10 {
-            asyncContext.perform {
+            performAsync {
                 await counter.increment()
             }
         }
@@ -40,12 +40,12 @@ final class AsyncContextTests: XCTestCase {
     func testParallelTask() async throws {
         let counter = Counter()
         let asyncContextStorage = AsyncContextStorage()
-        let asyncContext = AsyncContext(storage: asyncContextStorage,
+        let performAsync = AsyncContext(storage: asyncContextStorage,
                                         strategy: .parallelize,
                                         errorContext: .empty)
 
         for _ in 0 ..< 10 {
-            asyncContext.perform {
+            performAsync {
                 await counter.increment()
             }
         }
@@ -58,12 +58,12 @@ final class AsyncContextTests: XCTestCase {
     func testDebounceTask() async throws {
         let counter = Counter()
         let asyncContextStorage = AsyncContextStorage()
-        let asyncContext = AsyncContext(storage: asyncContextStorage,
+        let performAsync = AsyncContext(storage: asyncContextStorage,
                                         strategy: .debounce(for: 0.25),
                                         errorContext: .empty)
 
         for _ in 0 ..< 10 {
-            asyncContext.perform {
+            performAsync {
                 await counter.increment()
             }
             try await Task.sleep(for: .seconds(0.1))
@@ -76,7 +76,7 @@ final class AsyncContextTests: XCTestCase {
         await counter.reset()
 
         for _ in 0 ..< 10 {
-            asyncContext.perform {
+            performAsync {
                 await counter.increment()
             }
             try await Task.sleep(for: .seconds(0.3))
